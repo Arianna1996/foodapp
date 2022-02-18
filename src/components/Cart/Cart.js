@@ -2,11 +2,16 @@ import { useContext, useState } from "react";
 import CartContext from "../../store/cart-context";
 import Modal from "../UI/Modal";
 import CartItem from "./CartItem";
-import FormOrder from "./FormOrder";
+import Checkout from "./Checkout";
 import classes from "./Cart.module.css";
+import spinner from "../../assets/spinner.svg";
 
 const Cart = (props) => {
   const [confirmOrder, setConfirmOrder] = useState(false);
+  const [showButton, setShowButton] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+
   const cartCtx = useContext(CartContext);
   const totalAmount = `€ ${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
@@ -31,45 +36,75 @@ const Cart = (props) => {
     </ul>
   );
 
-  console.log(cartCtx.items);
-
   const onOrder = () => {
+    setShowButton(!showButton);
     setConfirmOrder(!confirmOrder);
   };
 
   async function addMealHandler(orderInfo) {
-    const finalOrder = [orderInfo, ...cartCtx.items];
-    console.log(finalOrder);
-    finalOrder.join("");
+    setIsLoading(true);
+    setShowMessage(false);
+
     const response = await fetch(
       "https://order-food-app-25b86-default-rtdb.firebaseio.com/orders.json",
       {
         method: "POST",
-        body: JSON.stringify(finalOrder),
+        body: JSON.stringify({
+          orderedItems: cartCtx.items,
+          userInfo: orderInfo,
+        }),
         headers: { "Content-type": "application/json" },
       }
     );
     const data = await response.json();
-    console.log(data);
+    setIsLoading(false);
+    setShowMessage(true);
+    cartCtx.clearCart(); /*viene richiamata la funzione per riportare il cart al default state (vuoto)*/
   }
+
   return (
     <Modal onClick={props.onClose}>
-      {cartItems}
-      <div className={classes.total}>
-        <span>Total Amount</span>
-        <span>{totalAmount}</span>
-      </div>
-      <div className={classes.actions}>
-        <button className={classes["button--alt"]} onClick={props.onClose}>
-          Close
-        </button>
-        {hasItems && (
-          <button className={classes.button} onClick={onOrder}>
-            Order
-          </button>
-        )}
-        {confirmOrder && <FormOrder onAddMeal={addMealHandler} />}
-      </div>
+      {isLoading && !showMessage ? (
+        <div className={classes.spinner}>
+          <img src={spinner} alt="spinner"></img>
+        </div>
+      ) : !isLoading &&
+        showMessage /*show message viene settato a true alla fine del processo di invio dei dati*/ ? (
+        <div className={classes.spinner}>
+          <p>Order completed!!</p>
+          <div className={classes.actions}>
+            <button className={classes["button--alt"]} onClick={props.onClose}>
+              Close
+            </button>
+          </div>
+        </div>
+      ) : (
+        <>
+          {cartItems}
+          <div className={classes.total}>
+            <span>Total Amount</span>
+            <span>{totalAmount}</span>
+          </div>
+          {showButton && (
+            <div className={classes.actions}>
+              <button
+                className={classes["button--alt"]}
+                onClick={props.onClose}
+              >
+                Close
+              </button>
+              {hasItems && (
+                <button className={classes.button} onClick={onOrder}>
+                  Order
+                </button>
+              )}
+            </div>
+          )}
+          {confirmOrder && (
+            <Checkout onClose={props.onClose} onAddMeal={addMealHandler} />
+          )}
+        </>
+      )}
     </Modal>
   );
 };

@@ -1,0 +1,89 @@
+.formOrder {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  text-align: left;
+  justify-content: space-between;
+  transition: 0.3s ease-in;
+}
+
+.buttonForm,
+.buttonCancel {
+  margin: 1.6rem 0 1rem 0 !important;
+  background-color: #ff561c !important;
+  color: #fff;
+  font-weight: bold;
+  border: 1px solid #ff561c !important;
+}
+
+.buttonCancel {
+  background-color: #fff !important;
+  color: #ff561c;
+}
+.buttonCancel:hover {
+  color: #ff561c !important;
+}
+.buttonForm:hover {
+  background-color: #ce4416 !important;
+  border-color: #ce4416 !important;
+}
+
+label {
+  font-weight: bold;
+  margin-top: 0.8rem;
+}
+
+input {
+  padding: 0.4rem;
+  margin-top: 0.8rem;
+  border-radius: 12px;
+  outline: 0px;
+  border: 1px solid #7c7c7c;
+  width: 95%;
+  margin: 0.4rem 0.1rem 0rem 0.1rem;
+}
+
+.titleForm {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 0.4rem;
+}
+.buttonOrderContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 0;
+}
+.buttonOrderContainer button {
+  width: 45%;
+  font-weight: bold;
+}
+
+.message {
+  display: flex;
+  justify-content: center;
+  height: 20px;
+  font-size: 0.8rem;
+}
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 50%;
+  justify-content: space-between;
+}
+.inputContainer p {
+  margin: 0;
+  text-align: center;
+  color: red;
+  font-weight: bold;
+}
+.button {
+  font: inherit;
+  cursor: pointer;
+  background-color: transparent;
+  border: 1px solid #ff561c;
+  padding: 0.5rem 2rem;
+  border-radius: 25px;
+  margin-left: 1rem;
+  transition: 0.3s;
+}

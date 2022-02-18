@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Card from "../UI/Card";
 import MealItem from "./MealItem/MealItem";
 import classes from "./AvailableMeals.module.css";
+import spinner from "../../assets/spinner.svg";
 
 const AvailableMeals = (props) => {
   const [meals, setMeals] = useState([]);
@@ -20,7 +21,6 @@ const AvailableMeals = (props) => {
         throw new Error("Something went wrong");
       }
       const data = await response.json();
-      console.log(data);
       const loadedMeals = [];
       for (const key in data) {
         loadedMeals.push({
@@ -42,7 +42,7 @@ const AvailableMeals = (props) => {
     fetchMealHandler();
   }, []);
 
-  let content = <p>Found no Movies :(</p>;
+  let content = <p>Found no Meals :(</p>;
 
   if (meals.length > 0) {
     content = meals.map((meal) => (
@@ -61,7 +61,11 @@ const AvailableMeals = (props) => {
   }
 
   if (isLoading) {
-    content = <p>Loading...</p>;
+    content = (
+      <div className={classes.spinner}>
+        <img src={spinner} alt="spinner"></img>
+      </div>
+    );
   }
 
   return (

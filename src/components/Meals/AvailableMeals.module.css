@@ -10,6 +10,14 @@
   margin: 0;
   padding: 0;
 }
+.spinner {
+  display: flex;
+  justify-content: center;
+}
+
+.spinner img {
+  width: 100px;
+}
 
 @keyframes meals-appear {
   from {

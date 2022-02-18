@@ -45,3 +45,20 @@
   background-color: #ff561c;
   color: white;
 }
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  min-height: 250px;
+  align-items: center;
+  flex-direction: column;
+}
+.spinner p {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ff561c;
+}
+
+.spinner img {
+  width: 100px;
+}
